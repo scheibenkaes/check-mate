@@ -13,15 +13,17 @@
     [:label {:for "itemtext"} "Checklist item text"]
     
     [:div.input-group
-     [:span {:class "input-group-btn"} (views/bs-button "+" :tooltip "Prepend item to list" :onclick "checkmate.views.new_list.prepend_item();")]
+     [:span {:class "input-group-btn"}
+      (views/bs-button "+" :tooltip "Prepend item to list" :onclick "checkmate.views.new_list.prepend_item();")]
      (text-field {:class "form-control" :placeholder "What needs to be checked/done?" :id "itemtext"} "itemtext")
-     [:span {:class "input-group-btn"} (views/bs-button "++" :tooltip "Append item to list" :onclick "checkmate.views.new_list.append_item();")]
+     [:span {:class "input-group-btn"}
+      (views/bs-button "++" :tooltip "Append item to list" :onclick "checkmate.views.new_list.append_item();")]
      ]]
    [:div.form-group [:hr]]
    [:div.form-group {:id "items"}]
    
    [:div.btn-group
-    [:button {:class "btn btn-default" :type "button"} "Save Checklist"]
+    (views/bs-button "Save Checklist" :onclick "checkmate.views.new_list.try_save_list();")
     (views/bs-button "Reset Checklist" :onclick "checkmate.views.new_list.reset_view();")]])
 
 (defn render []
