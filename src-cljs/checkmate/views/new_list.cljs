@@ -18,9 +18,9 @@
 (defn render-model! [{:keys [name items]}]
   (ef/at "#items" (ef/content (ef/html (render-items items)))
          "#listname" (ef/set-prop :value name)
-         "#name-group" (if (empty? name)
-                         (ef/add-class "has-error")
-                         (ef/remove-class "has-error"))))
+         "#name-group" (if (not-empty? name)
+                         (ef/remove-class "has-error")
+                         (ef/add-class "has-error"))))
 
 (defn get-item-text []
   (ef/from "#itemtext" (ef/get-prop :value)))
@@ -49,24 +49,42 @@
   (add-item-to-list-model :start))
 
 (defn ^:export init []
+  (reset-view)
   (add-watch list-model ::autoupdate (fn [_k _r _old _new]
                                        (render-model! _new)))
   (ef/at "#listname" (ev/listen :change (fn [_]
-                                          (swap! list-model assoc :name (get-list-name)))))
-  (reset-view))
+                                          (swap! list-model assoc :name (get-list-name))))))
 
 (defn pack-obj [obj]
   (js-obj "data" (.stringify js/JSON (clj->js obj))))
+
+(defn render-success [l]
+  (ef/html
+   [:div.panel.panel-success
+    [:div.panel-heading
+     "Success"]
+    [:div.panel-body "Checklist was saved successfully. "
+     [:a {:href (str "/show/" (:_id l))} "Click here to open it."]]]))
+
+(defn render-error [error]
+  (ef/html
+   [:div.panel.panel-danger
+    [:div.panel-heading
+     "Error"]
+    [:div.panel-body error]]))
+
+(defn save-list [model]
+  (.post js/jQuery "/save" (pack-obj model)
+                       (fn [e] (let [json (.parse js/JSON e)
+                                    resp (js->clj json :keywordize-keys true)]
+                                (if (:error resp)
+                                  (ef/at "#msg" (ef/content (render-error (:error resp))))
+                                  (ef/at "#msg" (ef/content (render-success resp))))))))
 
 (defn ^:export try-save-list []
   (let [model @list-model
         valid? (validate-model model)]
     (if valid?
-      (js/alert (.post js/jQuery "/save" (pack-obj model)
-                       (fn [e] (let [json (.parse js/JSON e)
-                                    resp (js->clj json :keywordize-keys true)]
-                                (if (:error resp)
-                                  (js/alert (:error resp))
-                                  (js/alert "save"))))))
-      (js/alert "Not valid"))))
+      (save-list model)
+      (js/alert "Please enter a name and at least one item"))))
 

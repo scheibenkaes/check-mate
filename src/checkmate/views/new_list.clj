@@ -4,8 +4,8 @@
 
 (defn render-form []
   [:div {:role "form" :id "new-list-form"}
-
-   [:div.form-group {:class "has-error" :id "name-group"}
+   [:div#msg]
+   [:div.form-group {:id "name-group"}
     (label {:class "control-label"} "listname" "Name of the list")
     (text-field {:class "form-control" :placeholder "Please enter a unique name" :id "listname"} "listname")]
    

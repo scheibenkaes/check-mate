@@ -34,7 +34,7 @@
          (not-empty? items)
          (unique-name? list-name))
       (mc/insert-and-return "lists" l)
-      {:error "list name not unique please choose a different one"})))
+      {:error "There's already a list of this name, please choose a different one"})))
 
 (defn find-list [id]
   (mc/find-map-by-id "lists" (ObjectId. id)))
