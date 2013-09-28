@@ -9,4 +9,11 @@
                  [hiccup "1.0.4"]]
   :plugins [[lein-ring "0.8.7"]
             [lein-cljsbuild "0.3.3"]]
+  :cljsbuild {
+              :builds [{:id :dev
+                        :source-paths ["src-cljs"]
+                        :compiler {
+                                   :output-to "resources/public/js/checkmate.js"
+                                   :optimizations :whitespace
+                                   :pretty-print true}}]}
   :ring {:handler checkmate.core/app})

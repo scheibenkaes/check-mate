@@ -13,7 +13,7 @@
     [:label {:for "itemtext"} "Checklist item text"]
     
     [:div.input-group
-     [:span {:class "input-group-btn"} (views/bs-button "+" :tooltip "Prepend item to list" :onclick "alert(1);")]
+     [:span {:class "input-group-btn"} (views/bs-button "+" :tooltip "Prepend item to list" :onclick "checkmate.views.new_list.test(1);")]
      (text-field {:class "form-control" :placeholder "What needs to be checked?"} "itemtext")
      [:span {:class "input-group-btn"} (views/bs-button "++" :tooltip "Append item to list")]
      ]]

@@ -6,7 +6,7 @@
           [:title title]
           [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
           (include-css "css/bootstrap.min.css")
-          (include-js "//code.jquery.com/jquery.js" "js/bootstrap.min.js")]
+          (include-js "//code.jquery.com/jquery.js" "js/bootstrap.min.js" "js/checkmate.js")]
          [:body [:div.container body]]
          ))
 
