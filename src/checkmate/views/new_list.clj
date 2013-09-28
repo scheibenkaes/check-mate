@@ -17,7 +17,7 @@
      (text-field {:class "form-control" :placeholder "What needs to be checked?" :id "itemtext"} "itemtext")
      [:span {:class "input-group-btn"} (views/bs-button "++" :tooltip "Append item to list" :onclick "checkmate.views.new_list.append_item();")]
      ]]
-
+   [:div.form-group [:hr]]
    [:div.form-group {:id "items"}]
 
    [:div.form-group
