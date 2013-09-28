@@ -37,7 +37,7 @@
              "#itemtext" (ef/focus)))))
 
 (defn validate-model [{name :name items :items}]
-  (every? (comp not empty?) [name items]))
+  (every? not-empty? [name items]))
 
 (defn ^:export reset-view []
   (reset! list-model empty-model))
@@ -55,8 +55,13 @@
                                           (swap! list-model assoc :name (get-list-name)))))
   (reset-view))
 
+(defn pack-obj [obj]
+  (js-obj "data" (.stringify js/JSON (clj->js obj))))
+
 (defn ^:export try-save-list []
-  (if-let [errors (validate-model @list-model)]
-    (js/alert "Saving")
-    (js/alert "Not valid")))
+  (let [model @list-model
+        valid? (validate-model model)]
+    (if valid?
+      (js/alert (.post js/jQuery "/save" (pack-obj model) (fn [e] (js/alert e))))
+      (js/alert "Not valid"))))
 
