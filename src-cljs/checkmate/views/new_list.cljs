@@ -7,7 +7,7 @@
 (def list-model (atom empty-model))
 
 (defn render-model! [{:keys [name items]}]
-  (ef/at "#items" (ef/content (ef/html [:h1 "test"]))
+  (ef/at "#items" (ef/content (ef/html (if-not (empty? items) items [:small "No items added yet."])))
          "#listname" (ef/set-prop :value name)))
 
 (defn get-item-text []

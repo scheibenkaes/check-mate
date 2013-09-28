@@ -18,7 +18,7 @@
      [:span {:class "input-group-btn"} (views/bs-button "++" :tooltip "Append item to list" :onclick "checkmate.views.new_list.append_item();")]
      ]]
 
-   [:div.form-group {:id "items"} [:small "No items added yet."]]
+   [:div.form-group {:id "items"}]
 
    [:div.form-group
     [:button {:class "btn btn-default"} "Save Checklist"]]])
