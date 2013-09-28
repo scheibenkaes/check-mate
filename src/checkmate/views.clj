@@ -10,5 +10,5 @@
          [:body [:div.container body]]
          ))
 
-(defn bs-button [text & {:keys [tooltip] :as options :or {tooltip ""}}]
-  [:button {:class "btn btn-default" :type "button" :title tooltip} text])
+(defn bs-button [text & {:keys [tooltip onclick] :as options :or {tooltip "" onclick nil}}]
+  [:button {:onclick onclick :class "btn btn-default" :type "button" :title tooltip} text])
