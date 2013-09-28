@@ -27,7 +27,6 @@
   (nil? (mc/find-one "lists" {:name n})))
 
 (defn store-new-list [l]
-  (println l)
   (let [{list-name :name items :items} l]
     (if (and
          (not-empty? list-name)
