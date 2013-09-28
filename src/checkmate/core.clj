@@ -5,6 +5,6 @@
             [checkmate.views.new-list :as new-list]))
 
 (defroutes app
-  (GET "/" [] (views/main-template {:body (new-list/render)}))
+  (GET "/" [] (views/main-template (new-list/render)))
   (route/resources "/"))
 
