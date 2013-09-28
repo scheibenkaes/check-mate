@@ -1,5 +1,6 @@
 (ns checkmate.views.overview
-  (:require [clojure.string :as string]))
+  (:require [clojure.string :as string]
+            [hiccup.element :as elm]))
 
 (defn render-group [group]
   (let [ordered (sort-by first group)]
@@ -8,7 +9,7 @@
        [:div
         [:h4 (string/upper-case letter)]
         (for [i items]
-          [:div (:name i)])])]))
+          [:div (elm/link-to (str "/show/" (:_id i)) (:name i))])])]))
 
 (defn render [lists]
   (let [grouped (group-by (comp first :name) lists)]
