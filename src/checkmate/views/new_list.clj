@@ -30,6 +30,7 @@
   {:body
    [:div
     [:h3 "Create a new checklist"]
+    [:div.row#msg]
     [:div.row
      [:div.col-md-12
       (render-form)]]]
