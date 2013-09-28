@@ -62,6 +62,11 @@
   (let [model @list-model
         valid? (validate-model model)]
     (if valid?
-      (js/alert (.post js/jQuery "/save" (pack-obj model) (fn [e] (js/alert e))))
+      (js/alert (.post js/jQuery "/save" (pack-obj model)
+                       (fn [e] (let [json (.parse js/JSON e)
+                                    resp (js->clj json :keywordize-keys true)]
+                                (if (:error resp)
+                                  (js/alert (:error resp))
+                                  (js/alert "save"))))))
       (js/alert "Not valid"))))
 

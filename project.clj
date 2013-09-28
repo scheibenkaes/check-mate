@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-1909"]
                  [org.clojure/core.async "0.1.222.0-83d0c2-alpha"]
-                 [org.clojure/data.json "0.2.3"]
+                 [cheshire "5.2.0"]
                  [compojure "1.1.5"]
                  [domina "1.0.2-SNAPSHOT"]
                  [enfocus "2.0.0-SNAPSHOT"]

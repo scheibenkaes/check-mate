@@ -27,10 +27,10 @@
     (views/bs-button "Reset Checklist" :onclick "checkmate.views.new_list.reset_view();")]])
 
 (defn render []
-  {:body
+  {:title "Check-Mate - Create a new checklist"
+   :body
    [:div
     [:h3 "Create a new checklist"]
-    [:div.row#msg]
     [:div.row
      [:div.col-md-12
       (render-form)]]]
