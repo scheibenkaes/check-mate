@@ -7,6 +7,7 @@
             [checkmate.views :as views]
             [checkmate.views.new-list :as new-list]
             [checkmate.views.show-list :as show-list]
+            [checkmate.views.overview :as overview]
             [monger.core :as mongo]
             [monger.collection :as mc])
   (:import [org.bson.types ObjectId]))
@@ -38,6 +39,9 @@
 (defn find-list [id]
   (mc/find-map-by-id "lists" (ObjectId. id)))
 
+(defn get-all-lists []
+  (mc/find-maps "lists"))
+
 (defroutes app
   (POST "/save" {{data :data} :params}
         (let [c (json/parse-string data true)]
@@ -47,7 +51,8 @@
          (views/main-template (show-list/render list))))
   (GET "/list/:id" [id]
        (json/generate-string (or (find-list id) {:error "No list with this id"})))
-  (GET "/" [] (views/main-template (new-list/render)))
+  (GET "/new" [] (views/main-template (new-list/render)))
+  (GET "/" [] (views/main-template (overview/render (get-all-lists))))
   (route/resources "/"))
 
 (def handler (site app))
