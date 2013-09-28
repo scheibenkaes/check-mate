@@ -1,6 +1,7 @@
 (ns checkmate.views.overview
   (:require [clojure.string :as string]
-            [hiccup.element :as elm]))
+            [hiccup.element :as elm]
+            [checkmate.views :as views]))
 
 (defn render-group [group]
   (let [ordered (sort-by first group)]
@@ -15,4 +16,6 @@
   (let [grouped (group-by (comp first string/upper-case :name) lists)]
     {:body [:div
             [:h3 "All checklists"]
-            (render-group grouped)]}))
+            [:div.row
+             [:div.col-md-12
+              (render-group grouped)]]]}))
