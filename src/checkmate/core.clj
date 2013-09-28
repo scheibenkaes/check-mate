@@ -1,6 +1,8 @@
 (ns checkmate.core
-  (:use compojure.core))
+  (:use compojure.core)
+  (:require [compojure.route :as route]))
 
 (defroutes app
-  (GET "/" [] "Hello World"))
+  (GET "/" [] "Hello World")
+  (route/resources "/"))
 
