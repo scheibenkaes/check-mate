@@ -3,7 +3,7 @@
   (:require [checkmate.views :as views]))
 
 (defn render-form []
-  [:form {:role "form" :id "new-list-form"}
+  [:div {:role "form" :id "new-list-form"}
 
    [:div.form-group {:class "has-error" :id "name-group"}
     (label {:class "control-label"} "listname" "Name of the list")

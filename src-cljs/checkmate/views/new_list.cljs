@@ -2,7 +2,7 @@
   (:require [enfocus.core :as ef]))
 
 (def empty-model {:name nil
-                  :items [{:text "Win CC"}]})
+                  :items []})
 
 (def list-model (atom empty-model))
 
@@ -24,6 +24,9 @@
         new-item-text (get-item-text)]
     (when-not (empty? new-item-text)
       (swap! list-model update-in [:items] f {:text new-item-text})
+      (ef/at "#itemtext" (ef/set-prop :value nil)
+             "#itemtext" (ef/focus))
+
       (render-model! @list-model))))
 
 (defn ^:export append-item []
