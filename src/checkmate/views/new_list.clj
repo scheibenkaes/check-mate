@@ -21,11 +21,10 @@
    [:div.form-group {:id "items"} [:small "No items added yet."]]
 
    [:div.form-group
-    [:button {:class "btn btn-default"} "Save Checklist"]
-    ]])
+    [:button {:class "btn btn-default"} "Save Checklist"]]])
 
 (defn render []
   [:div
-   [:h1 "Create a new check list"]
+   [:h3 "Create a new checklist"]
    [:div.row
     [:div.col-md-12 (render-form)]]])
