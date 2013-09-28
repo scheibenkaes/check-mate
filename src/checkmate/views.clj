@@ -9,3 +9,6 @@
           (include-js "//code.jquery.com/jquery.js" "js/bootstrap.min.js")]
          [:body [:div.container body]]
          ))
+
+(defn bs-button [text & {:keys [tooltip] :as options :or {tooltip ""}}]
+  [:button {:class "btn btn-default" :type "button" :title tooltip} text])
