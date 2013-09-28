@@ -20,7 +20,7 @@
            [:div.collapse.navbar-collapse.navbar-ex1-collapse
             [:ul.nav.navbar-nav
              [:li [:a {:href "/new"} "New Checklist"]]
-             [:li [:a {:href "/"} "Show all"]]]]]
+             [:li [:a {:href "/"} "A-Z"]]]]]
           [:div.container body]]))
 
 (defn bs-button [text & {:keys [tooltip onclick] :as options :or {tooltip "" onclick nil}}]

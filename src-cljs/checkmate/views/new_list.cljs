@@ -64,7 +64,7 @@
     [:div.panel-heading
      "Success"]
     [:div.panel-body "Checklist was saved successfully. "
-     [:a {:href (str "/show/" (:_id l))} "Click here to open it."]]]))
+     [:a {:href (str "/show/" (:_id l))} "Click here to show it."]]]))
 
 (defn render-error [error]
   (ef/html
