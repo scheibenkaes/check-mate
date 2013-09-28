@@ -25,9 +25,10 @@
     (when-not (empty? new-item-text)
       (swap! list-model update-in [:items] f {:text new-item-text})
       (ef/at "#itemtext" (ef/set-prop :value nil)
-             "#itemtext" (ef/focus))
+             "#itemtext" (ef/focus)))))
 
-      (render-model! @list-model))))
+(defn ^:export reset-view []
+  (reset! list-model empty-model))
 
 (defn ^:export append-item []
   (add-item-to-list-model :end))
@@ -36,5 +37,7 @@
   (add-item-to-list-model :start))
 
 (defn ^:export init []
-  (render-model! @list-model))
+  (add-watch list-model ::autoupdate (fn [_k _r _old _new]
+                                       (render-model! _new)))
+  (reset-view))
 
