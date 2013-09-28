@@ -8,7 +8,8 @@
                  [compojure "1.1.5"]
                  [domina "1.0.2-SNAPSHOT"]
                  [enfocus "2.0.0-SNAPSHOT"]
-                 [hiccup "1.0.4"]]
+                 [hiccup "1.0.4"]
+                 [com.novemberain/monger "1.7.0-beta1"]]
   :plugins [[lein-ring "0.8.7"]
             [lein-cljsbuild "0.3.3"]]
   :cljsbuild {
@@ -18,4 +19,6 @@
                                    :output-to "resources/public/js/checkmate.js"
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
-  :ring {:handler checkmate.core/app})
+  :ring {:handler checkmate.core/app
+         :init checkmate.core/init
+         :destroy checkmate.core/shutdown})
