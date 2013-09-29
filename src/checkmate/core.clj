@@ -36,7 +36,11 @@
       {:error "There's already a list of this name, please choose a different one"})))
 
 (defn find-list [id]
-  (mc/find-map-by-id "lists" (ObjectId. id)))
+  (try
+    (mc/find-map-by-id "lists" (ObjectId. id))
+    (catch Exception e
+      (println e)
+      {:error (str "list " id " could not be found")})))
 
 (defn get-all-lists []
   (mc/find-maps "lists"))
