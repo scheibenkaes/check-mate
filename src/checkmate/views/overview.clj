@@ -14,10 +14,9 @@
            [:div.col-md-4
             [:strong (elm/link-to (str "/show/" (:_id i)) (:name i))]]
            [:div.col-md-8
-            [:small
-             (elm/link-to (str "/edit/" (:_id i)) "Edit")
-             " | "
-             [:a {:href "#" :onclick (format "checkmate.views.overview.try_delete_list('%s', '%s');" (:_id i) (:name i))} "Delete"]]]])])]))
+            [:div.btn-group
+             [:a {:class "btn btn-default btn-xs" :href (str "/edit/" (:_id i))} [:span.glyphicon.glyphicon-edit] "Edit"]
+             [:a {:class "btn btn-default btn-xs":href "#" :onclick (format "checkmate.views.overview.try_delete_list('%s', '%s');" (:_id i) (:name i))} [:span.glyphicon.glyphicon-trash] "Delete"]]]])])]))
 
 (defn render [lists]
   (let [grouped (group-by (comp first string/upper-case :name) lists)]
