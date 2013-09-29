@@ -8,6 +8,7 @@
           [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
           (include-css "/css/bootstrap.min.css" "/css/checkmate.css")
           (include-js "//code.jquery.com/jquery-2.0.3.min.js" "/js/bootstrap.min.js" "/js/checkmate.js")
+          [:link {:rel "shortcut icon":href "http://checkmate.clojurecup.com/favicon.ico"}]
           [:link {:href "http://fonts.googleapis.com/css?family=Ubuntu" :rel "stylesheet" :type "text/css"} ]]
          [:body {:onload (or onload "")}
           [:nav.navbar.navbar-default {:role "navigation"}
