@@ -18,11 +18,12 @@
              [:span.icon-bar]
              [:span.icon-bar]
              [:span.icon-bar]]
-            [:a.navbar-brand {:href "/"} [:img {:src "/icon.png" :width 48 :height 20}]]]
+            [:a.navbar-brand {:href "/az"} [:img {:src "/icon.png" :width 48 :height 20}]]]
            [:div.collapse.navbar-collapse.navbar-ex1-collapse
             [:ul.nav.navbar-nav
              [:li [:a {:href "/az"} "A-Z"]]
-             [:li [:a {:href "/new"} "New Checklist"]]]
+             [:li [:a {:href "/new"} "New Checklist"]]
+             [:li [:a {:href "/"} "About"]]]
             [:p.navbar-text.pull-right "A ClojureCup entry by Benjamin Klüglein"]]]
           [:div.container body]]))
 
