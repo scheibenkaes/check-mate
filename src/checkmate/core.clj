@@ -75,7 +75,8 @@
   (GET "/edit/:id" [id] (views/main-template (new-list/render id)))
   (GET "/az" [] (views/main-template (overview/render (get-all-lists))))
   (GET "/" [] (views/main-template (views/landing-view)))
-  (route/resources "/"))
+  (route/resources "/")
+  (route/not-found "These are not the checklists you are looking for!"))
 
 (def handler (site app))
 
