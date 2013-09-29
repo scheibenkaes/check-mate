@@ -40,4 +40,9 @@
               [:div#msg]]]
             [:div.row
              [:div.col-md-12
-              (render-group grouped)]]]}))
+              (render-group grouped)]]
+            [:div.row
+             [:div.col-md-4.col-xs-5]
+             [:div.col-md-4.col-xs-4
+              [:a {:href "#top"} [:span.glyphicon.glyphicon-arrow-up]]]]
+            ]}))
