@@ -21,7 +21,8 @@
            [:div.collapse.navbar-collapse.navbar-ex1-collapse
             [:ul.nav.navbar-nav
              [:li [:a {:href "/az"} "A-Z"]]
-             [:li [:a {:href "/new"} "New Checklist"]]]]]
+             [:li [:a {:href "/new"} "New Checklist"]]]
+            [:p.navbar-text.pull-right "A ClojureCup entry by Benjamin Klüglein"]]]
           [:div.container body]]))
 
 (defn landing-view []
