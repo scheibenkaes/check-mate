@@ -18,7 +18,7 @@
              [:span.icon-bar]
              [:span.icon-bar]
              [:span.icon-bar]]
-            [:a.navbar-brand {:href "/"} "Check-Mate"]]
+            [:a.navbar-brand {:href "/"} [:img {:src "/icon.png" :width 48 :height 20}]]]
            [:div.collapse.navbar-collapse.navbar-ex1-collapse
             [:ul.nav.navbar-nav
              [:li [:a {:href "/az"} "A-Z"]]
