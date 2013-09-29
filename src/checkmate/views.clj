@@ -31,7 +31,11 @@
     [:div.container
      [:h1 "Check-Mate" [:small "A tiny yet friendly checklist app."]]
      [:p "If you came here hoping for an app about chess, I'm sorry. If not go ahead and improve your day with some checklists. No matter what brought you here, you should read Atul Gawande's great book " [:a {:href "https://en.wikipedia.org/wiki/The_Checklist_Manifesto"} "'The Checklist Manifesto'."] " You definitely will feel the urge for some checklists afterwards. :-)"]
-     [:p [:a.btn.btn-primary {:href "/new"} "Create a new checklist"]]]]})
+     [:p [:div.btn-toolbar
+          [:div.btn-group
+           [:a.btn.btn-default {:href "/new"} "Create a new checklist"]
+           [:a.btn.btn-default {:href "/az"} "See all existing checklists"]]
+          [:div.btn-group [:a.btn.btn-primary {:href "http://clojurecup.com/app.html?app=checkmate"} "Vote for Check-Mate"]]]]]]})
 
 (defn bs-button [text & {:keys [tooltip onclick] :as options :or {tooltip "" onclick nil}}]
   [:button (merge {:onclick onclick :class "btn btn-default" :type "button" :title tooltip} options) text])
