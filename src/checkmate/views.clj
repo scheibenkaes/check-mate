@@ -19,8 +19,8 @@
             [:a.navbar-brand {:href "/"} "Check-Mate"]]
            [:div.collapse.navbar-collapse.navbar-ex1-collapse
             [:ul.nav.navbar-nav
-             [:li [:a {:href "/new"} "New Checklist"]]
-             [:li [:a {:href "/"} "A-Z"]]]]]
+             [:li [:a {:href "/"} "A-Z"]]
+             [:li [:a {:href "/new"} "New Checklist"]]]]]
           [:div.container body]]))
 
 (defn bs-button [text & {:keys [tooltip onclick] :as options :or {tooltip "" onclick nil}}]
