@@ -44,16 +44,24 @@
 (defn delete-list [l]
   (let [name (:name (find-list (:id l)))
         remv (mc/remove-by-id "lists" (ObjectId. (:id l)))]
-    (println remv)
     {:_id (:id l) :name name}))
+
+(defn update-list [l]
+  (let [mongo-list (dissoc l :_id)]
+    (mc/update-by-id "lists" (ObjectId. (:_id l)) mongo-list)
+    (find-list (:_id l))))
 
 (defroutes app
   (POST "/delete" {{data :data} :params}
         (let [l (json/parse-string data true)]
           (json/generate-string (delete-list l))))
   (POST "/save" {{data :data} :params}
-        (let [c (json/parse-string data true)]
-          (json/generate-string (store-new-list c))))
+        (let [c (json/parse-string data true)
+              existing? (:_id c)
+              saved-list (if existing?
+                           (update-list c)
+                           (store-new-list c))]
+          (json/generate-string saved-list)))
   (GET "/show/:id" [id]
        (let [list (find-list id)]
          (views/main-template (show-list/render list))))
