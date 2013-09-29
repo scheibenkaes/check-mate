@@ -8,7 +8,7 @@
     [:div
      (for [[letter items] ordered]
        [:div
-        [:h3 letter]
+        [:h3 {:id letter} letter]
         (for [i items]
           (let [num-done (count (filter :checked? (:items i)))
                 num-all (count (:items i))
@@ -23,9 +23,18 @@
                 [:a {:class "btn btn-default btn-xs":href "#" :onclick (format "checkmate.views.overview.try_delete_list('%s', '%s');" (:_id i) (:name i))} [:span.glyphicon.glyphicon-trash] "Delete"]]]]]))])]))
 
 (defn render [lists]
-  (let [grouped (group-by (comp first string/upper-case :name) lists)]
+  (let [grouped (group-by (comp first string/upper-case :name) lists)
+        letters (map first grouped)]
     {:body [:div.container
             [:h3 "All checklists"]
+            [:div.row
+             [:div.col-md-4]
+             [:div.col-md-4
+              [:div.btn-toolbar
+              [:div.btn-group
+               (for [l (sort letters)]
+                 [:a.btn.btn-default {:href (str "#" l)} l])]]]
+             [:div.col-md-4]]
             [:div.row
              [:div.col-md-12
               [:div#msg]]]
