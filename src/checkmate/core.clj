@@ -59,7 +59,8 @@
          (views/main-template (show-list/render list))))
   (GET "/list/:id" [id]
        (json/generate-string (or (find-list id) {:error "No list with this id"})))
-  (GET "/new" [] (views/main-template (new-list/render)))
+  (GET "/new" [] (views/main-template (new-list/render nil)))
+  (GET "/edit/:id" [id] (views/main-template (new-list/render id)))
   (GET "/" [] (views/main-template (overview/render (get-all-lists))))
   (route/resources "/"))
 

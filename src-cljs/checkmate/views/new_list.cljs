@@ -49,12 +49,17 @@
 (defn ^:export prepend-item []
   (add-item-to-list-model :start))
 
-(defn ^:export init []
+(defn ^:export init [id]
   (reset-view)
   (add-watch list-model ::autoupdate (fn [_k _r _old _new]
                                        (render-model! _new)))
   (ef/at "#listname" (ev/listen :change (fn [_]
-                                          (swap! list-model assoc :name (get-list-name))))))
+                                          (swap! list-model assoc :name (get-list-name)))))
+  (when id
+    (views/get-list id (fn [d]
+                         (if (:error d)
+                           (js/alert (:error d))
+                           (reset! list-model d))))))
 
 (defn render-success [l]
   (ef/html

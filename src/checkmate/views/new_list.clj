@@ -26,12 +26,12 @@
     (views/bs-button "Save Checklist" :onclick "checkmate.views.new_list.try_save_list();")
     (views/bs-button "Reset Checklist" :onclick "checkmate.views.new_list.reset_view();")]])
 
-(defn render []
-  {:title "Check-Mate - Create a new checklist"
+(defn render [id]
+  {:title "Check-Mate - Set up a checklist"
    :body
    [:div
-    [:h3 "Create a new checklist"]
+    [:h3 "Set up a checklist"]
     [:div.row
      [:div.col-md-12
       (render-form)]]]
-   :onload "checkmate.views.new_list.init();"})
+   :onload (format "checkmate.views.new_list.init(%s);" (if id (format "'%s'" id) id))})

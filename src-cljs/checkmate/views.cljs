@@ -9,4 +9,8 @@
   (js-obj "data" (.stringify js/JSON (clj->js obj))))
 
 (defn unpack-obj [string]
-   (js->clj (.parse js/JSON string) :keywordize-keys true))
+  (js->clj (.parse js/JSON string) :keywordize-keys true))
+
+(defn get-list [id func]
+  (.getJSON js/jQuery (str "/list/" id) #(func (js->clj % :keywordize-keys true))))
+
