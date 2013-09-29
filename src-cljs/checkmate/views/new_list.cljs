@@ -1,5 +1,6 @@
 (ns checkmate.views.new-list
-  (:require [enfocus.core :as ef]
+  (:require [clojure.string :as string]
+            [enfocus.core :as ef]
             [enfocus.events :as ev]
             [checkmate.views :as views]))
 
@@ -11,8 +12,20 @@
 (defn render-items [items]
   (if-not (empty? items)
     [:ol
-     (for [i items] [:li (:text i)])]
+     (for [i items] [:li (:text i) "   " [:span.glyphicon.glyphicon-remove-circle
+                                          {:title "Delete item"
+                                           :onclick (str "checkmate.views.new_list.delete_item('" (:text i) "');")}]])]
     [:small "No items added yet."]))
+
+(defn items-without [items name]
+  (filter (fn [{n :text}]
+            (not= n name)) items))
+
+(defn ^:export delete-item [name]
+  (when name
+    (let [items (:items @list-model)
+          filtered (items-without items name)]
+      (swap! list-model assoc :items filtered))))
 
 (def not-empty? (comp not empty?))
 
@@ -24,10 +37,12 @@
                          (ef/add-class "has-error"))))
 
 (defn get-item-text []
-  (ef/from "#itemtext" (ef/get-prop :value)))
+  (-> (ef/from "#itemtext" (ef/get-prop :value))
+      string/trim))
 
 (defn get-list-name []
-  (ef/from "#listname" (ef/get-prop :value)))
+  (-> (ef/from "#listname" (ef/get-prop :value))
+      string/trim))
 
 (defn add-item-to-list-model [side]
   (let [f (if (= side :end) conj #(apply vector %2 %1))
