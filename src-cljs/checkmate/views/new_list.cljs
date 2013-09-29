@@ -12,9 +12,15 @@
 (defn render-items [items]
   (if-not (empty? items)
     [:ol
-     (for [i items] [:li (:text i) "   " [:span.glyphicon.glyphicon-remove-circle
-                                          {:title "Delete item"
-                                           :onclick (str "checkmate.views.new_list.delete_item('" (:text i) "');")}]])]
+     (for [i items] [:div.row
+                     [:div.col-md-8.col-xs-6  [:li
+                                      (:text i)]]
+                     [:div.col-md-2.col-xs-6
+                      [:button.btn.btn-default.btn-xs
+                       {:title "Delete item"
+                        :onclick (str "checkmate.views.new_list.delete_item('" (:text i) "');")} [:span.glyphicon.glyphicon-trash] "Delete"]]
+                     ])
+     [:p " "]]
     [:small "No items added yet."]))
 
 (defn items-without [items name]
