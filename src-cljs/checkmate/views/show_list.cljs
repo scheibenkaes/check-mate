@@ -46,7 +46,6 @@
   (reset! list-model model))
 
 (defn ^:export init [id]
-  (views/warn-of-unsaved-changes)
   (hook-up-buttons)
   (add-watch list-model ::auto (fn [_ __ ___ n]
                                  (render-list n)
