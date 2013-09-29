@@ -22,7 +22,8 @@
             (not= n name)) items))
 
 (defn ^:export delete-item [name]
-  (when name
+  (when (and name
+             (.confirm js/window (str "Do you really want to delete item '" name "'?")))
     (let [items (:items @list-model)
           filtered (items-without items name)]
       (swap! list-model assoc :items filtered))))
