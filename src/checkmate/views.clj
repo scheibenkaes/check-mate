@@ -12,7 +12,7 @@
           [:nav.navbar.navbar-default {:role "navigation"}
            [:div.navbar-header
             [:button.navbar-toggle {:type "button" :data-toggle "collapse" :data-target ".navbar-ex1-collapse"}
-             [:span.sr-only "Toggle"]
+             [:span.sr-only "Toggle Menu"]
              [:span.icon-bar]
              [:span.icon-bar]
              [:span.icon-bar]]

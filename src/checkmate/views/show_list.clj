@@ -2,18 +2,18 @@
   (:require [checkmate.views :as views]))
 
 (defn render-buttons [l]
-  [:div
-   (views/bs-button "Save" :id "save-checkmarks")
-   (views/bs-button "Check all" :id "check-all")
-   (views/bs-button "Uncheck all" :id "uncheck-all")
-   [:a.btn.btn-default {:href (str "/edit/" (:_id l))} "Edit checklist"]])
+  [:div.btn-group-vertical
+   [:button.btn.btn-default.btn-sm {:id "save-checkmarks"} [:span.glyphicon.glyphicon-floppy-save] " Save changes"]
+   [:button.btn.btn-default.btn-sm {:id "check-all"} [:span.glyphicon.glyphicon-ok] " Check all"]
+   [:button.btn.btn-default.btn-sm {:id "uncheck-all"} [:span.glyphicon.glyphicon-unchecked] " Uncheck all"]
+   [:a.btn.btn-default.btn-sm {:href (str "/edit/" (:_id l))} [:span.glyphicon.glyphicon-edit] " Edit checklist"]])
 
 (defn render [l]
   {:body [:div
           [:h3#title "Checklist"]
           [:div.row
-           [:div#list.col-md-8
+           [:div#list.col-md-10
             [:div [:h5 "Loading Checklist"]]]
-           [:div.col-md-4 (render-buttons l)
+           [:div.col-md-2 (render-buttons l)
             ]]]
    :onload (format "checkmate.views.show_list.init('%s');" (:_id l))})
