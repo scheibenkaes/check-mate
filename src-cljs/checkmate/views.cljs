@@ -14,3 +14,8 @@
 (defn get-list [id func]
   (.getJSON js/jQuery (str "/list/" id) #(func (js->clj % :keywordize-keys true))))
 
+(defn save-list [checklist callback]
+  (.post js/jQuery "/save" (pack-obj checklist)
+                       (fn [e] (let [resp (unpack-obj e)]
+                                (callback resp)))))
+

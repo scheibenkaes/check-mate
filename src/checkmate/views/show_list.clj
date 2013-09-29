@@ -3,7 +3,7 @@
 
 (defn render-buttons [l]
   [:div
-   (views/bs-button "Save")
+   (views/bs-button "Save" :id "save-checkmarks")
    (views/bs-button "Check all" :id "check-all")
    (views/bs-button "Uncheck all" :id "uncheck-all")
    [:a.btn.btn-default {:href (str "/edit/" (:_id l))} "Edit checklist"]])

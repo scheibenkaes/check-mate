@@ -93,11 +93,10 @@
     [:div.panel-body error]]))
 
 (defn save-list [model]
-  (.post js/jQuery "/save" (views/pack-obj model)
-                       (fn [e] (let [resp (views/unpack-obj e)]
-                                (if (:error resp)
-                                  (ef/at "#msg" (ef/content (render-error (:error resp))))
-                                  (ef/at "#msg" (ef/content (render-success resp))))))))
+  (views/save-list model (fn [e]
+                           (if (:error e)
+                             (ef/at "#msg" (ef/content (render-error (:error e))))
+                             (ef/at "#msg" (ef/content (render-success e)))))))
 
 (defn ^:export try-save-list []
   (let [model @list-model

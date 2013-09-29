@@ -1,6 +1,7 @@
 (ns checkmate.views.show-list
   (:require [enfocus.core :as ef]
-            [enfocus.events :as ev]))
+            [enfocus.events :as ev]
+            [checkmate.views :as views]))
 
 (def list-model (atom nil))
 
@@ -23,10 +24,16 @@
   (ef/at "#list" (ef/content (render-items items))
          "#title" (ef/content name)))
 
+(defn on-save [e]
+  (views/save-list @list-model (fn [{error :error :as list}]
+                                 (if error
+                                   (js/alert error)
+                                   (.reload js/location true)))))
+
 (defn hook-up-buttons []
   (ef/at "#uncheck-all" (ev/listen :click (fn [_] (swap! list-model update-in [:items] #(map (fn [i] (dissoc i :checked?)) %))))
          "#check-all" (ev/listen :click (fn [_] (swap! list-model update-in [:items] #(map (fn [i] (assoc i :checked? true)) %))))
-         ))
+         "#save-checkmarks" (ev/listen :click on-save)))
 
 (defn init-checkboxes []
   (ef/at "input[type=checkbox]" (ev/listen :change (fn [e]
