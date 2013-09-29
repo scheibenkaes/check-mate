@@ -22,9 +22,7 @@
    [:div.form-group [:hr]]
    [:div.form-group {:id "items"}]
    
-   [:div.btn-group
-    (views/bs-button "Save Checklist" :onclick "checkmate.views.new_list.try_save_list();")
-    (views/bs-button "Reset Checklist" :onclick "checkmate.views.new_list.reset_view();")]])
+  ])
 
 (defn render [id]
   {:title "Check-Mate - Set up a checklist"
@@ -32,6 +30,10 @@
    [:div
     [:h3 "Set up a checklist"]
     [:div.row
-     [:div.col-md-12
-      (render-form)]]]
+     [:div.col-md-10
+      (render-form)]
+     [:div.col-md-2
+      [:div.btn-group-vertical
+       [:button.btn.btn-default.btn-sm {:onclick "checkmate.views.new_list.try_save_list();"} [:span.glyphicon.glyphicon-floppy-save] "Save Checklist"]
+       [:button.btn.btn-default.btn-sm {:onclick "checkmate.views.new_list.reset_view();"} [:span.glyphicon.glyphicon-repeat] "Reset Checklist"]]]]]
    :onload (format "checkmate.views.new_list.init(%s);" (if id (format "'%s'" id) id))})
