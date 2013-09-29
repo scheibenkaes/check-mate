@@ -41,7 +41,16 @@
 (defn get-all-lists []
   (mc/find-maps "lists"))
 
+(defn delete-list [l]
+  (let [name (:name (find-list (:id l)))
+        remv (mc/remove-by-id "lists" (ObjectId. (:id l)))]
+    (println remv)
+    {:_id (:id l) :name name}))
+
 (defroutes app
+  (POST "/delete" {{data :data} :params}
+        (let [l (json/parse-string data true)]
+          (json/generate-string (delete-list l))))
   (POST "/save" {{data :data} :params}
         (let [c (json/parse-string data true)]
           (json/generate-string (store-new-list c))))

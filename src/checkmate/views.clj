@@ -25,3 +25,4 @@
 
 (defn bs-button [text & {:keys [tooltip onclick] :as options :or {tooltip "" onclick nil}}]
   [:button (merge {:onclick onclick :class "btn btn-default" :type "button" :title tooltip} options) text])
+

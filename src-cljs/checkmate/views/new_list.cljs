@@ -1,6 +1,7 @@
 (ns checkmate.views.new-list
   (:require [enfocus.core :as ef]
-            [enfocus.events :as ev]))
+            [enfocus.events :as ev]
+            [checkmate.views :as views]))
 
 (def empty-model {:name nil
                   :items []})
@@ -55,9 +56,6 @@
   (ef/at "#listname" (ev/listen :change (fn [_]
                                           (swap! list-model assoc :name (get-list-name))))))
 
-(defn pack-obj [obj]
-  (js-obj "data" (.stringify js/JSON (clj->js obj))))
-
 (defn render-success [l]
   (ef/html
    [:div.panel.panel-success
@@ -74,9 +72,8 @@
     [:div.panel-body error]]))
 
 (defn save-list [model]
-  (.post js/jQuery "/save" (pack-obj model)
-                       (fn [e] (let [json (.parse js/JSON e)
-                                    resp (js->clj json :keywordize-keys true)]
+  (.post js/jQuery "/save" (views/pack-obj model)
+                       (fn [e] (let [resp (views/unpack-obj e)]
                                 (if (:error resp)
                                   (ef/at "#msg" (ef/content (render-error (:error resp))))
                                   (ef/at "#msg" (ef/content (render-success resp))))))))
