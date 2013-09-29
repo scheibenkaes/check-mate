@@ -19,3 +19,7 @@
                        (fn [e] (let [resp (unpack-obj e)]
                                 (callback resp)))))
 
+(defn ^:export warn-of-unsaved-changes []
+  (set! (.-onbeforeunload js/window) (fn []
+                                       "You may have unsaved changes, they'll be lost if you proceed.")))
+
