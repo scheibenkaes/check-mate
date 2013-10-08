@@ -2,5 +2,6 @@
 deploy:
 	lein cljsbuild once
 	lein ring uberwar
-	scp target/checkmate*standalone.war root@146.185.148.123:/usr/share/jetty8/webapps/root.war
-	ssh root@146.185.148.123 "/etc/init.d/jetty8 restart"
+	scp target/checkmate*standalone.war root@scheibenkaes.org:/usr/share/jetty/webapps/checkmate.war
+	ssh root@scheibenkaes.org "/etc/init.d/jetty stop"
+	ssh root@scheibenkaes.org "/etc/init.d/jetty start"
