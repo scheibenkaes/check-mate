@@ -9,7 +9,8 @@
    [:a.btn.btn-default.btn-sm {:href (str "/edit/" (:_id l))} [:span.glyphicon.glyphicon-edit] " Edit checklist"]])
 
 (defn render [l]
-  {:body [:div
+  {:title (str (:name l) " - CheckMate")
+   :body [:div
           [:h3#title "Checklist"]
           [:div.row
            [:div#list.col-md-10

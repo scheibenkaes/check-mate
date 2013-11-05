@@ -55,5 +55,4 @@
               (let [clj (js->clj json :keywordize-keys true)]
                 (if (:error clj)
                   (js/alert (str "Cannot find list " id))
-                  (model-loaded clj))
-                ))))
+                  (model-loaded clj))))))

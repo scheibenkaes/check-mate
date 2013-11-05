@@ -1,82 +1,94 @@
 (ns checkmate.core
   (:use compojure.core
-        [compojure.handler :only [site]])
-  (:require monger.json
-            [cheshire.core :as json]
+        [compojure.handler :only [site]]
+        [clojure.tools.nrepl.server :only [start-server stop-server]])
+  (:require [cheshire.core :as json]
             [compojure.route :as route]
             [checkmate.views :as views]
+            [checkmate.db :as db]
+            [checkmate.util :as util]
+            [checkmate.users :as users]
             [checkmate.views.new-list :as new-list]
+            [checkmate.views.landing :as landing]
             [checkmate.views.show-list :as show-list]
             [checkmate.views.overview :as overview]
-            [monger.core :as mongo]
-            [monger.collection :as mc])
-  (:import [org.bson.types ObjectId]))
+            [checkmate.views.login :as login]
+            [ring.util.response :as resp]
+            [cemerick.friend :as friend]
+            [cemerick.friend.workflows :as workflow]
+            [cemerick.friend.credentials :as cred]))
+
+(def repl
+  (when (System/getenv "CHECKMATE_REPL")
+    (start-server :port 8079 :bind "127.0.0.1")))
 
 (defn init []
-  (mongo/connect!)
-  (-> "checkmate"
-      mongo/get-db
-      mongo/set-db!))
+  (db/init))
 
 (defn shutdown []
-  (mongo/disconnect!))
+  (when repl (stop-server repl))
+  (db/shutdown))
 
-(def not-empty? (comp not empty?))
-
-(defn unique-name? [n]
-  (nil? (mc/find-one "lists" {:name n})))
-
-(defn store-new-list [l]
-  (let [{list-name :name items :items} l]
-    (if (and
-         (not-empty? list-name)
-         (not-empty? items)
-         (unique-name? list-name))
-      (mc/insert-and-return "lists" l)
-      {:error "There's already a list of this name, please choose a different one"})))
-
-(defn find-list [id]
-  (try
-    (mc/find-map-by-id "lists" (ObjectId. id))
-    (catch Exception e
-      (println e)
-      {:error (str "list " id " could not be found")})))
-
-(defn get-all-lists []
-  (mc/find-maps "lists"))
-
-(defn delete-list [l]
-  (let [name (:name (find-list (:id l)))
-        remv (mc/remove-by-id "lists" (ObjectId. (:id l)))]
-    {:_id (:id l) :name name}))
-
-(defn update-list [l]
-  (let [mongo-list (dissoc l :_id)]
-    (mc/update-by-id "lists" (ObjectId. (:_id l)) mongo-list)
-    (find-list (:_id l))))
+(defn request->user [req]
+  (-> req
+      (friend/current-authentication)
+      :identity))
 
 (defroutes app
-  (POST "/delete" {{data :data} :params}
-        (let [l (json/parse-string data true)]
-          (json/generate-string (delete-list l))))
-  (POST "/save" {{data :data} :params}
-        (let [c (json/parse-string data true)
-              existing? (:_id c)
-              saved-list (if existing?
-                           (update-list c)
-                           (store-new-list c))]
-          (json/generate-string saved-list)))
-  (GET "/show/:id" [id]
-       (let [list (find-list id)]
-         (views/main-template (show-list/render list))))
-  (GET "/list/:id" [id]
-       (json/generate-string (or (find-list id) {:error "No list with this id"})))
-  (GET "/new" [] (views/main-template (new-list/render nil)))
-  (GET "/edit/:id" [id] (views/main-template (new-list/render id)))
-  (GET "/az" [] (views/main-template (overview/render (get-all-lists))))
-  (GET "/" [] (views/main-template (views/landing-view)))
+  (GET "/edit/:id" {{id :id} :params :as req}
+       (friend/authorize #{:user}
+                         (let [user (request->user req)]
+                           (views/main-template (new-list/render id) :request req))))
+  
+  (GET "/new" req
+       (friend/authorize #{:user}
+                         (views/main-template (new-list/render nil) :request req)))
+  
+  (GET "/list/:id" {{id :id} :params :as req}
+       (friend/authorize #{:user}
+                         (let [user (request->user req)]
+                           (json/generate-string (or (db/find-list id user) {:error "No list with this id"})))))
+  
+  (GET "/az" req (let [user (request->user req)]
+                   (friend/authorize #{:user}
+                                     (views/main-template (overview/render (db/get-all-lists user)) :request req))))
+  
+  (GET "/show/:id" {{id :id} :params :as req}
+       (friend/authorize #{:user}
+                         (let [user (request->user req)
+                               list (db/find-list id user)]
+                           (views/main-template (show-list/render list) :request req))))
+  
+  (POST "/save" {{data :data} :params :as req}
+        (friend/authorize #{:user}
+                          (let [c (json/parse-string data true)
+                                user (request->user req)
+                                existing? (:_id c)
+                                saved-list (if existing?
+                                             (db/update-list c user)
+                                             (db/store-new-list c user))]
+                            (json/generate-string saved-list))))
+  
+  (POST "/delete" {{data :data} :params :as req}
+        (friend/authorize #{:user}
+                          (let [l (json/parse-string data true)
+                                user (request->user req)]
+                            (json/generate-string (db/delete-list l user)))))
+
+  (GET "/" req
+       (views/main-template (landing/render) :request req))
+
+  (GET "/login" req
+       (views/main-template (login/render)))
+
+  (GET "/logout" req
+       (friend/logout* (resp/redirect "/")))
+  
   (route/resources "/")
   (route/not-found "These are not the checklists you are looking for!"))
 
-(def handler (site app))
+(def handler (-> app
+                 (friend/authenticate {:credential-fn #(cred/bcrypt-credential-fn users/find-user %)
+                                       :workflows [(workflow/interactive-form)]})
+                 site))
 
