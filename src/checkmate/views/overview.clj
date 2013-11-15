@@ -1,6 +1,7 @@
 (ns checkmate.views.overview
   (:require [clojure.string :as string]
             [hiccup.element :as elm]
+            [hiccup.form :as form]
             [checkmate.views :as views]))
 
 (defn render-group [group]
@@ -24,17 +25,18 @@
 
 (defn render [lists]
   (let [grouped (group-by (comp first string/upper-case :name) lists)
-        letters (map first grouped)]
+        letters (map first grouped)
+        names (map (juxt :name :_id) (sort-by :name lists))
+        names (concat [["Jump to a list by name" ""]] names)]
     {:body [:div.container
-            [:h3 "All checklists"]
             [:div.row
-             [:div.col-md-4]
-             [:div.col-md-4
+             [:div.col-md-8
               [:div.btn-toolbar
               [:div.btn-group
                (for [l (sort letters)]
                  [:a.btn.btn-default {:href (str "#" l)} l])]]]
-             [:div.col-md-4]]
+             [:div.col-md-4
+              [:select.form-control {:id "quick-select"} (form/select-options names)]]]
             [:div.row
              [:div.col-md-12
               [:div#msg]]]
@@ -45,4 +47,5 @@
              [:div.col-md-4.col-xs-5]
              [:div.col-md-4.col-xs-4
               [:a {:href "#top"} [:span.glyphicon.glyphicon-arrow-up]]]]
-            ]}))
+            ]
+     :onload "checkmate.views.overview.init();"}))
