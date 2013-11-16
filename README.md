@@ -11,7 +11,6 @@ FIXME
 
 ## What's missing
 
-- Multi user support, right now everyone can add and change check lists. 
 - Reordering of checklist items.
 
 ## License
