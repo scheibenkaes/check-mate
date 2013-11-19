@@ -63,7 +63,10 @@
   (every? not-empty? [name items]))
 
 (defn ^:export reset-view []
-  (reset! list-model empty-model))
+  (when (and
+         (not= @list-model empty-model)
+         (.confirm js/window "Do you really want to reset this list?"))
+   (reset! list-model empty-model)))
 
 (defn ^:export append-item []
   (add-item-to-list-model :end))

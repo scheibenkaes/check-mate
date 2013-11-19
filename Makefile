@@ -1,5 +1,6 @@
 
 deploy:
+	lein clean
 	lein cljsbuild once
 	lein ring uberwar
 	scp target/checkmate*standalone.war root@scheibenkaes.org:/usr/share/jetty/webapps/root.war

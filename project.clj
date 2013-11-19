@@ -1,4 +1,4 @@
-(defproject checkmate "0.2.1"
+(defproject checkmate "0.2.2"
   :description "A checklist app for the web"
   :url "http://checkmate.clojurecup.com/"
   :license {:name "Eclipse Public License"
